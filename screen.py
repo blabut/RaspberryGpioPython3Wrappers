@@ -1,4 +1,4 @@
-from RPLCD.gpio import CharLCD
+from utils.RPLCD.gpio import CharLCD
 import RPi.GPIO as GPIO
 
 class Screen :
@@ -16,3 +16,9 @@ class Screen :
     def display(self, message):
         self.lcd.clear()
         self.lcd.write_string(str(message))
+
+if __name__ == "__main__":
+    GPIO.setmode(GPIO.BOARD)
+    screen = Screen()
+    screen.clear()
+    screen.display("Hello world!")

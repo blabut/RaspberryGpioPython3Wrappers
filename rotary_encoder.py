@@ -31,3 +31,27 @@ class RotaryEncoder:
 
     def get_value(self):
         return self.value
+
+
+
+if __name__ == "__main__":
+    import threading
+    
+    def update(r):
+        r.update()
+
+    def display(r):
+        prev = r.get_value()
+        while True:
+            value = r.get_value() 
+            if value != prev:
+                print(value)
+                prev = value
+            sleep(0.01)
+    
+    GPIO.setmode(GPIO.BOARD)
+    r = RotaryEncoder()
+    t1 = threading.Thread(target=update, kwargs={"r":r})
+    t2 = threading.Thread(target=display, kwargs={"r":r})
+    t1.start()
+    t2.start()
