@@ -5,11 +5,16 @@ class RotaryEncoder:
     """
     This class is a wrapper to use rotary encoder connected to a Raspberry Pi.
     It assumes the GPIO mode is set to GPIO.BOARD, and is meant to use in a threaded fashion by launching the update method in a separate thread.
+    You can use the clockwise argument to change the direction in which ticks are counted.
     """
-    def __init__(self, clk=11, dt=12):
+    def __init__(self, clk=11, dt=12, clockwise = True):
         self.value = 0
         self.clk = clk
         self.dt = dt
+        if clockwise:
+            self.clockwise = 1
+        else :
+            self.clockwise = -1
         GPIO.setup(self.clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
@@ -21,9 +26,9 @@ class RotaryEncoder:
             dtState = GPIO.input(self.dt)
             if clkState != clkLastState:
                     if dtState != clkState:
-                            value += 0.5
+                            value -= self.clockwise*0.5
                     else:
-                            value -= 0.5
+                            value += self.clockwise*0.5
                     if value % 1 == 0:
                         self.value = value      
             clkLastState = clkState
@@ -50,7 +55,7 @@ if __name__ == "__main__":
             sleep(0.01)
     
     GPIO.setmode(GPIO.BOARD)
-    r = RotaryEncoder()
+    r = RotaryEncoder(clockwise = True)
     t1 = threading.Thread(target=update, kwargs={"r":r})
     t2 = threading.Thread(target=display, kwargs={"r":r})
     t1.start()
