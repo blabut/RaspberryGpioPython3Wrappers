@@ -1,6 +1,6 @@
 from time import sleep
 
-from utils.RPLCD.gpio import CharLCD
+from .utils.RPLCD.gpio import CharLCD
 import RPi.GPIO as GPIO
 
 class Screen :
