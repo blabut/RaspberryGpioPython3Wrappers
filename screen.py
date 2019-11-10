@@ -1,3 +1,5 @@
+from time import sleep
+
 from utils.RPLCD.gpio import CharLCD
 import RPi.GPIO as GPIO
 
@@ -21,4 +23,7 @@ if __name__ == "__main__":
     GPIO.setmode(GPIO.BOARD)
     screen = Screen()
     screen.clear()
-    screen.display("Hello world!")
+    message = str(input("What message do you want to display?\n"))
+    screen.display(message)
+    sleep(3)
+    screen.clear()
