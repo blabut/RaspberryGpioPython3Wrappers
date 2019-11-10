@@ -13,9 +13,15 @@ class Screen :
         self.lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_e=35, pins_data=[33, 31, 29, 23])
     
     def clear(self):
+        """
+        Use this method to clear whatever is present on the screen
+        """
         self.lcd.clear()
 
     def display(self, message):
+        """
+        Use this method to print a message on the screen
+        """
         self.lcd.clear()
         self.lcd.write_string(str(message))
 
